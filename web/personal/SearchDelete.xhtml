@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.SearchForDeletePersonalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form id="perSearchForm">
+                <h:outputScript library="js" name="validarut.js"></h:outputScript>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.PersonalPrimaryKeyLabel}" for="rut" />
+                    <h:inputText maxlength="10" styleClass="rut_textbox" id="rut" value="#{personalController.searchPK}" title="#{bundle.CreatePersonalTitle_rut}"/>
+                    <br />
+                    <h:outputText id="rutFormatInvalidError" styleClass="inputerror" value="#{bundle.RutFormatInvalidError}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{personalController.seekAndDestroy}" value="#{bundle.EditPersonalTitle}" onclick="return validateAndSend()"/>
+                <br />
+                <br />
+                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.CreatePersonalShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreatePersonalIndexLink}"/>
+            </h:form>
+            <script>
+                $(document).ready(function (){
+                    hideErrorMessages();
+                    
+                    $('#perCreateForm\\:fecnac').datepicker({
+                    });
+                });
+                
+                function validateAndSend(){
+                    hideErrorMessages();
+                    var rutInput = $('#perSearchForm\\:rut').val();
+                    var retorno = true;
+                    
+                    if(!Rut(rutInput)){
+                        $('#perSearchForm\\:rutFormatInvalidError').show();
+                        retorno = false;
+                    }
+                    alert("Está seguro que desea eliminar este registro?");
+                    return retorno;
+                }
+                
+                function hideErrorMessages(){
+                    $('#perSearchForm\\:rutFormatInvalidError').hide();
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+
+</html>

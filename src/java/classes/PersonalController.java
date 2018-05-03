@@ -30,6 +30,7 @@ public class PersonalController implements Serializable {
     private classes.ProfesionFacade ejbProfesionFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private String searchPK;
 
     public PersonalController() {
     }
@@ -67,6 +68,14 @@ public class PersonalController implements Serializable {
     public String prepareList() {
         recreateModel();
         return "List";
+    }
+    
+    public String renderSearchForm() {
+        return "SearchEdit";
+    }
+    
+    public String renderDeleteSearchForm() {
+        return "SearchDelete";
     }
 
     public String prepareView() {
@@ -106,6 +115,16 @@ public class PersonalController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
+    
+    public String searchEdit() {
+        current = getPersonal(getSearchPK());
+        if(current == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersonalNotFoundError"));
+            return null;
+        }
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PersonalFound"));
+        return "Edit";
+    }
 
     public String update() {
         try {
@@ -124,6 +143,19 @@ public class PersonalController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
+        return "List";
+    }
+    
+    public String seekAndDestroy() {
+        current = getPersonal(getSearchPK());
+        if(current == null){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersonalNotFoundError"));
+            return null;
+        }
+        performDestroy();
+        recreatePagination();
+        recreateModel();
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PersonalFoundAndDestroyed"));
         return "List";
     }
 
@@ -241,6 +273,20 @@ public class PersonalController implements Serializable {
             }
         }
 
+    }
+
+    /**
+     * @return the searchPK
+     */
+    public String getSearchPK() {
+        return searchPK;
+    }
+
+    /**
+     * @param searchPK the searchPK to set
+     */
+    public void setSearchPK(String searchPK) {
+        this.searchPK = searchPK;
     }
 
 }

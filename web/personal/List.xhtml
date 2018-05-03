@@ -77,6 +77,10 @@
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
+                <h:commandLink action="#{personalController.renderSearchForm}" value="#{bundle.SearchForUpdatePersonalTitle}"/>
+                <br />
+                <h:commandLink action="#{personalController.renderDeleteSearchForm}" value="#{bundle.SearchForDeletePersonalTitle}"/>
+                <br />
                 <h:commandLink action="#{personalController.prepareCreate}" value="#{bundle.ListPersonalCreateLink}"/>
                 <br />
                 <br />
