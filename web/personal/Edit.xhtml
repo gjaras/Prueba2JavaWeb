@@ -7,103 +7,104 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.CreatePersonalTitle}"></h:outputText>
+            <h:outputText value="#{bundle.EditPersonalTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
-            <h:form id="perCreateForm">
+            <h:form id="perUpdateForm">
                 <h:outputScript library="js" name="validarut.js"></h:outputScript>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_rut}" for="rut" />
-                    <h:inputText maxlength="10" styleClass="rut_textbox" id="rut" value="#{personalController.selected.rut}" title="#{bundle.CreatePersonalTitle_rut}"/>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_rut}" for="rut" />
+                    <h:inputText maxlength="10" styleClass="rut_textbox" id="rut" value="#{personalController.selected.rut}" title="#{bundle.EditPersonalTitle_rut}"/>
                     <br />
                     <h:outputText id="rutFormatInvalidError" styleClass="inputerror" value="#{bundle.RutFormatInvalidError}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_nombre}" for="nombre" />
-                    <h:inputText maxlength="50" styleClass="name_textbox" id="nombre" value="#{personalController.selected.nombre}" title="#{bundle.CreatePersonalTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePersonalRequiredMessage_nombre}"/>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_nombre}" for="nombre" />
+                    <h:inputText maxlength="50" styleClass="name_textbox" id="nombre" value="#{personalController.selected.nombre}" title="#{bundle.EditPersonalTitle_nombre}"/>
                     <br />
                     <h:outputText id="nameEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_fecnac}" for="fecnac" />
-                    <h:inputText id="fecnac" value="#{personalController.selected.fecnac}" title="#{bundle.CreatePersonalTitle_fecnac}" >
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_fecnac}" for="fecnac" />
+                    <h:inputText id="fecnac" value="#{personalController.selected.fecnac}" title="#{bundle.EditPersonalTitle_fecnac}" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:inputText>
                     <br />
                     <h:outputText id="dateEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_genero}" for="genero" />
-                    <h:selectOneRadio id="genero" value="#{personalController.selected.genero}" title="#{bundle.CreatePersonalTitle_genero}" >
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_genero}" for="genero" />
+                    <h:selectOneRadio id="genero" value="#{personalController.selected.genero}" title="#{bundle.EditPersonalTitle_genero}" >
                         <f:selectItem itemValue="M" itemLabel="Masculino" />
                         <f:selectItem itemValue="F" itemLabel="Femenino" />
                     </h:selectOneRadio>
                     <br />
                     <h:outputText id="genderEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_estado}" for="estado" />
-                    <h:selectBooleanCheckbox id="estado" value="#{personalController.selected.estado}" title="#{bundle.CreatePersonalTitle_estado}" ></h:selectBooleanCheckbox>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_codcomuna}" for="codcomuna" />
-                    <h:selectOneMenu id="codcomuna" value="#{personalController.selected.codcomuna}" title="#{bundle.CreatePersonalTitle_codcomuna}" >
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_estado}" for="estado" />
+                    <h:selectBooleanCheckbox id="estado" value="#{personalController.selected.estado}" title="#{bundle.EditPersonalTitle_estado}" ></h:selectBooleanCheckbox>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_codcomuna}" for="codcomuna" />
+                    <h:selectOneMenu id="codcomuna" value="#{personalController.selected.codcomuna}" title="#{bundle.EditPersonalTitle_codcomuna}" >
                         <f:selectItems value="#{comunaController.listaComunas()}"/>
                     </h:selectOneMenu>
                     <br />
                     <h:outputText id="comunaEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonalLabel_codpro}" for="codpro" />
-                    <h:selectOneMenu id="codpro" value="#{personalController.selected.codpro}" title="#{bundle.CreatePersonalTitle_codpro}" >
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_codpro}" for="codpro" />
+                    <h:selectOneMenu id="codpro" value="#{personalController.selected.codpro}" title="#{bundle.EditPersonalTitle_codpro}" >
                         <f:selectItems value="#{profesionController.listaProfesiones()}"/>
                     </h:selectOneMenu>
                     <br />
                     <h:outputText id="profesionEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
                 </h:panelGrid>
                 <br />
-                <h:commandLink action="#{personalController.create}" value="#{bundle.CreatePersonalSaveLink}" onclick="return validateAndSend()"/>
+                <h:commandLink action="#{personalController.update}" value="#{bundle.EditPersonalSaveLink}" onclick="return validateAndSend()"/>
+                <br />
+                <h:link outcome="View" value="#{bundle.EditPersonalViewLink}"/>
+                <br />
+                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.EditPersonalShowAllLink}" immediate="true"/>
                 <br />
                 <br />
-                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.CreatePersonalShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreatePersonalIndexLink}"/>
+                <h:link outcome="/index" value="#{bundle.EditPersonalIndexLink}" />
             </h:form>
             <script>
                 $(document).ready(function (){
                     hideErrorMessages();
                     
-                    $('#perCreateForm\\:fecnac').datepicker({
+                    $('#perUpdateForm\\:fecnac').datepicker({
                     });
                 });
                 
                 function validateAndSend(){
                     hideErrorMessages();
-                    var rutInput = $('#perCreateForm\\:rut').val();
-                    var nameInput = $('#perCreateForm\\:nombre').val();
-                    var dateInput = $('#perCreateForm\\:fecnac').val();
-                    var genderInput = $('input[name=perCreateForm\\:genero]:checked').val()
+                    var rutInput = $('#perUpdateForm\\:rut').val();
+                    var nameInput = $('#perUpdateForm\\:nombre').val();
+                    var dateInput = $('#perUpdateForm\\:fecnac').val();
+                    var genderInput = $('input[name=perUpdateForm\\:genero]:checked').val()
                     //var genderInput = $('#perCreateForm\\:genero').checked();
                     console.log("gender input: "+genderInput);
-                    var comunaInput = $('#perCreateForm\\:codcomuna').val();
+                    var comunaInput = $('#perUpdateForm\\:codcomuna').val();
                     console.log(comunaInput);
-                    var profInput   = $('#perCreateForm\\:codpro').val();
+                    var profInput   = $('#perUpdateForm\\:codpro').val();
                     var retorno = true;
                     
                     if(!Rut(rutInput)){
-                        $('#perCreateForm\\:rutFormatInvalidError').show();
+                        $('#perUpdateForm\\:rutFormatInvalidError').show();
                         retorno = false;
                     }
                     if(!nameInput){
-                        $('#perCreateForm\\:nameEmptyError').show();
+                        $('#perUpdateForm\\:nameEmptyError').show();
                         retorno = false;
                     }
                     if(!dateInput){
-                        $('#perCreateForm\\:dateEmptyError').show();
+                        $('#perUpdateForm\\:dateEmptyError').show();
                         retorno = false
                     }
                     if(!genderInput){
-                        $('#perCreateForm\\:genderEmptyError').show();
+                        $('#perUpdateForm\\:genderEmptyError').show();
                         retorno = false
                     }
                     if(!comunaInput){
-                        $('#perCreateForm\\:comunaEmptyError').show();
+                        $('#perUpdateForm\\:comunaEmptyError').show();
                         retorno = false
                     }
                     if(!profInput){
-                        $('#perCreateForm\\:profesionEmptyError').show();
+                        $('#perUpdateForm\\:profesionEmptyError').show();
                         retorno = false
                     }
                     
@@ -111,12 +112,12 @@
                 }
                 
                 function hideErrorMessages(){
-                    $('#perCreateForm\\:rutFormatInvalidError').hide();
-                    $('#perCreateForm\\:nameEmptyError').hide();
-                    $('#perCreateForm\\:dateEmptyError').hide();
-                    $('#perCreateForm\\:genderEmptyError').hide();
-                    $('#perCreateForm\\:comunaEmptyError').hide();
-                    $('#perCreateForm\\:profesionEmptyError').hide();
+                    $('#perUpdateForm\\:rutFormatInvalidError').hide();
+                    $('#perUpdateForm\\:nameEmptyError').hide();
+                    $('#perUpdateForm\\:dateEmptyError').hide();
+                    $('#perUpdateForm\\:genderEmptyError').hide();
+                    $('#perUpdateForm\\:comunaEmptyError').hide();
+                    $('#perUpdateForm\\:profesionEmptyError').hide();
                 }
             </script>
         </ui:define>
