@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -44,25 +45,39 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonalTitle_genero}"/>
                             </f:facet>
-                            <h:outputText value="#{item.genero}"/>
+                            <c:choose>
+                                <c:when test="#{item.isHombre()}">
+                                    <h:outputText value="Masculino"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <h:outputText value="Femenino"/>
+                                </c:otherwise>
+                            </c:choose>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonalTitle_estado}"/>
                             </f:facet>
-                            <h:outputText value="#{item.estado}"/>
+                            <c:choose>
+                                <c:when test="#{item.estado}">
+                                    <h:outputText value="Activo"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <h:outputText value="Inactivo"/>
+                                </c:otherwise>
+                            </c:choose>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonalTitle_codcomuna}"/>
                             </f:facet>
-                            <h:outputText value="#{item.codcomuna}"/>
+                            <h:outputText value="#{comunaController.buscarComuna(item.codcomuna)}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonalTitle_codpro}"/>
                             </f:facet>
-                            <h:outputText value="#{item.codpro}"/>
+                            <h:outputText value="#{profesionController.buscarProfesion(item.codpro)}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">

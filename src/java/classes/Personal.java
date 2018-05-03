@@ -103,6 +103,14 @@ public class Personal implements Serializable {
     public Character getGenero() {
         return genero;
     }
+    
+    public boolean isHombre() {
+        if(genero == 'M'){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public void setGenero(Character genero) {
         this.genero = genero;
