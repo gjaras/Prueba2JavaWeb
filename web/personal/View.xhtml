@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewPersonalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewPersonalLabel_rut}"/>
+                    <h:outputText value="#{personalController.selected.rut}" title="#{bundle.ViewPersonalTitle_rut}"/>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_nombre}"/>
+                    <h:outputText value="#{personalController.selected.nombre}" title="#{bundle.ViewPersonalTitle_nombre}"/>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_fecnac}"/>
+                    <h:outputText value="#{personalController.selected.fecnac}" title="#{bundle.ViewPersonalTitle_fecnac}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_genero}"/>
+                    <h:outputText value="#{personalController.selected.genero}" title="#{bundle.ViewPersonalTitle_genero}"/>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_estado}"/>
+                    <h:outputText value="#{personalController.selected.estado}" title="#{bundle.ViewPersonalTitle_estado}"/>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_codcomuna}"/>
+                    <h:outputText value="#{personalController.selected.codcomuna}" title="#{bundle.ViewPersonalTitle_codcomuna}"/>
+                    <h:outputText value="#{bundle.ViewPersonalLabel_codpro}"/>
+                    <h:outputText value="#{personalController.selected.codpro}" title="#{bundle.ViewPersonalTitle_codpro}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{personalController.destroyAndView}" value="#{bundle.ViewPersonalDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewPersonalEditLink}"/>
+                <br />
+                <h:commandLink action="#{personalController.prepareCreate}" value="#{bundle.ViewPersonalCreateLink}" />
+                <br />
+                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.ViewPersonalShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewPersonalIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

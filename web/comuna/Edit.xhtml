@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditComunaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form id='comUpdateForm'>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditComunaLabel_codComuna}" for="codComuna" />
+                    <h:panelGrid columns='2'>
+                        <input disabled='true' id='comunaPrefix' size="2"/>
+                        <h:inputText maxlength="3" id="codComuna" styleClass="number_textbox" value="#{comunaController.selected.codComuna}" title="#{bundle.CreateComunaTitle_codComuna}" />
+                    </h:panelGrid>
+                    <br />
+                    <h:outputText id="codeEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.EditComunaLabel_nombre}" for="nombre" />
+                    <h:inputText maxlength="30" id="nombre" value="#{comunaController.selected.nombre}" title="#{bundle.EditComunaTitle_nombre}" />
+                    <br />
+                    <h:outputText id="nameEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.EditComunaLabel_codregion}" for="codregion" />
+                    <h:selectOneMenu id="codregion" value="#{comunaController.selected.codregion}" title="#{bundle.EditComunaTitle_codregion}" >
+                        <f:selectItems value="#{regionController.listaRegiones()}"/>
+                    </h:selectOneMenu>
+                    <br />
+                    <h:outputText id="regEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{comunaController.update}" value="#{bundle.EditComunaSaveLink}" onclick="return validateAndSend()"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditComunaViewLink}"/>
+                <br />
+                <h:commandLink action="#{comunaController.prepareList}" value="#{bundle.EditComunaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditComunaIndexLink}" />
+            </h:form>
+            <script>
+                $(document).ready(function (){
+                    hideErrorMessages();
+                    $('#comUpdateForm\\:codregion').on('change', function(){
+                        var regCod = $('#comUpdateForm\\:codregion').val();
+                        $('#comunaPrefix').val(regCod);
+                    });
+                    $('#comUpdateForm\\:codregion').trigger('change');
+                    
+                });
+                
+                function validateAndSend(){
+                    hideErrorMessages();
+                    var codeInput =   $('#comUpdateForm\\:codComuna').val();
+                    var nameInput =   $('#comUpdateForm\\:nombre').val();
+                    var regionInput =  $('#comUpdateForm\\:codregion').val();
+                    var retorno = true;
+                    
+                    if(!codeInput){
+                        $('#comUpdateForm\\:codeEmptyError').show();
+                        retorno = false;
+                    }
+                    if(!nameInput){
+                        $('#comUpdateForm\\:nameEmptyError').show();
+                        retorno = false;
+                    }
+                    if(!regionInput){
+                        $('#comUpdateForm\\:regEmptyError').show();
+                        retorno = false
+                    }
+                    if(retorno){
+                         var totalcode = $('#comunaPrefix').val()+$('#comUpdateForm\\:codComuna').val();
+                        $('#comUpdateForm\\:codComuna').val(totalcode);
+                    }
+                    return retorno
+                }
+                
+                function hideErrorMessages(){
+                    $('#comUpdateForm\\:codeEmptyError').hide();
+                    $('#comUpdateForm\\:nameEmptyError').hide();
+                    $('#comUpdateForm\\:regEmptyError').hide();
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+
+</html>

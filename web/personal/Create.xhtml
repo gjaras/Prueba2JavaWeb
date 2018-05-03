@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreatePersonalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form id="perCreateForm">
+                <h:outputScript library="js" name="validarut.js"></h:outputScript>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_rut}" for="rut" />
+                    <h:inputText maxlength="10" styleClass="rut_textbox" id="rut" value="#{personalController.selected.rut}" title="#{bundle.CreatePersonalTitle_rut}"/>
+                    <br />
+                    <h:outputText id="rutFormatInvalidError" styleClass="inputerror" value="#{bundle.RutFormatInvalidError}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_nombre}" for="nombre" />
+                    <h:inputText maxlength="50" styleClass="name_textbox" id="nombre" value="#{personalController.selected.nombre}" title="#{bundle.CreatePersonalTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePersonalRequiredMessage_nombre}"/>
+                    <br />
+                    <h:outputText id="nameEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_fecnac}" for="fecnac" />
+                    <h:inputText id="fecnac" value="#{personalController.selected.fecnac}" title="#{bundle.CreatePersonalTitle_fecnac}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <br />
+                    <h:outputText id="dateEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_genero}" for="genero" />
+                    <h:selectOneRadio id="genero" value="#{personalController.selected.genero}" title="#{bundle.CreatePersonalTitle_genero}" >
+                        <f:selectItem itemValue="M" itemLabel="Masculino" />
+                        <f:selectItem itemValue="F" itemLabel="Femenino" />
+                    </h:selectOneRadio>
+                    <br />
+                    <h:outputText id="genderEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_estado}" for="estado" />
+                    <h:selectBooleanCheckbox id="estado" value="#{personalController.selected.estado}" title="#{bundle.CreatePersonalTitle_estado}" ></h:selectBooleanCheckbox>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_codcomuna}" for="codcomuna" />
+                    <h:selectOneMenu id="codcomuna" value="#{personalController.selected.codcomuna}" title="#{bundle.CreatePersonalTitle_codcomuna}" >
+                        <f:selectItems value="#{comunaController.listaComunas()}"/>
+                    </h:selectOneMenu>
+                    <br />
+                    <h:outputText id="comunaEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                    <h:outputLabel value="#{bundle.CreatePersonalLabel_codpro}" for="codpro" />
+                    <h:selectOneMenu id="codpro" value="#{personalController.selected.codpro}" title="#{bundle.CreatePersonalTitle_codpro}" >
+                        <f:selectItems value="#{profesionController.listaProfesiones()}"/>
+                    </h:selectOneMenu>
+                    <br />
+                    <h:outputText id="profesionEmptyError" styleClass="inputerror" value="#{bundle.EmptyFieldError}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{personalController.create}" value="#{bundle.CreatePersonalSaveLink}" onclick="return validateAndSend()"/>
+                <br />
+                <br />
+                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.CreatePersonalShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreatePersonalIndexLink}"/>
+            </h:form>
+            <script>
+                $(document).ready(function (){
+                    hideErrorMessages();
+                    
+                    $('#perCreateForm\\:fecnac').datepicker({
+                    });
+                });
+                
+                function validateAndSend(){
+                    hideErrorMessages();
+                    var rutInput = $('#perCreateForm\\:rut').val();
+                    var nameInput = $('#perCreateForm\\:nombre').val();
+                    var dateInput = $('#perCreateForm\\:fecnac').val();
+                    var genderInput = $('input[name=perCreateForm\\:genero]:checked').val()
+                    //var genderInput = $('#perCreateForm\\:genero').checked();
+                    console.log("gender input: "+genderInput);
+                    var comunaInput = $('#perCreateForm\\:codcomuna').val();
+                    console.log(comunaInput);
+                    var profInput   = $('#perCreateForm\\:codpro').val();
+                    var retorno = true;
+                    
+                    if(!Rut(rutInput)){
+                        $('#perCreateForm\\:rutFormatInvalidError').show();
+                        retorno = false;
+                    }
+                    if(!nameInput){
+                        $('#perCreateForm\\:nameEmptyError').show();
+                        retorno = false;
+                    }
+                    if(!dateInput){
+                        $('#perCreateForm\\:dateEmptyError').show();
+                        retorno = false
+                    }
+                    if(!genderInput){
+                        $('#perCreateForm\\:genderEmptyError').show();
+                        retorno = false
+                    }
+                    if(!comunaInput){
+                        $('#perCreateForm\\:comunaEmptyError').show();
+                        retorno = false
+                    }
+                    if(!profInput){
+                        $('#perCreateForm\\:profesionEmptyError').show();
+                        retorno = false
+                    }
+                    
+                    return retorno
+                }
+                
+                function hideErrorMessages(){
+                    $('#perCreateForm\\:rutFormatInvalidError').hide();
+                    $('#perCreateForm\\:nameEmptyError').hide();
+                    $('#perCreateForm\\:dateEmptyError').hide();
+                    $('#perCreateForm\\:genderEmptyError').hide();
+                    $('#perCreateForm\\:comunaEmptyError').hide();
+                    $('#perCreateForm\\:profesionEmptyError').hide();
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+
+</html>

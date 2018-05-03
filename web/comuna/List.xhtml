@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListComunaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListComunaEmpty}" rendered="#{comunaController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{comunaController.items.rowCount > 0}">
+                    <h:outputText value="#{comunaController.pagination.pageFirstItem + 1}..#{comunaController.pagination.pageLastItem + 1}/#{comunaController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{comunaController.previous}" value="#{bundle.Previous} #{comunaController.pagination.pageSize}" rendered="#{comunaController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{comunaController.next}" value="#{bundle.Next} #{comunaController.pagination.pageSize}" rendered="#{comunaController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{comunaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListComunaTitle_codComuna}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codComuna}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListComunaTitle_nombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListComunaTitle_codregion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codregion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{comunaController.prepareView}" value="#{bundle.ListComunaViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{comunaController.prepareEdit}" value="#{bundle.ListComunaEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{comunaController.destroy}" value="#{bundle.ListComunaDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{comunaController.prepareCreate}" value="#{bundle.ListComunaCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListComunaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

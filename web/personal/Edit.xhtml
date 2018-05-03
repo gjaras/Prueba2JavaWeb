@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditPersonalTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_rut}" for="rut" />
+                    <h:inputText id="rut" value="#{personalController.selected.rut}" title="#{bundle.EditPersonalTitle_rut}" required="true" requiredMessage="#{bundle.EditPersonalRequiredMessage_rut}"/>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_nombre}" for="nombre" />
+                    <h:inputText id="nombre" value="#{personalController.selected.nombre}" title="#{bundle.EditPersonalTitle_nombre}" required="true" requiredMessage="#{bundle.EditPersonalRequiredMessage_nombre}"/>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_fecnac}" for="fecnac" />
+                    <h:inputText id="fecnac" value="#{personalController.selected.fecnac}" title="#{bundle.EditPersonalTitle_fecnac}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_genero}" for="genero" />
+                    <h:inputText id="genero" value="#{personalController.selected.genero}" title="#{bundle.EditPersonalTitle_genero}" />
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_estado}" for="estado" />
+                    <h:inputText id="estado" value="#{personalController.selected.estado}" title="#{bundle.EditPersonalTitle_estado}" />
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_codcomuna}" for="codcomuna" />
+                    <h:selectOneMenu id="codcomuna" value="#{personalController.selected.codcomuna}" title="#{bundle.EditPersonalTitle_codcomuna}" >
+                        <f:selectItems value="#{comunaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditPersonalLabel_codpro}" for="codpro" />
+                    <h:selectOneMenu id="codpro" value="#{personalController.selected.codpro}" title="#{bundle.EditPersonalTitle_codpro}" >
+                        <f:selectItems value="#{profesionController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{personalController.update}" value="#{bundle.EditPersonalSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditPersonalViewLink}"/>
+                <br />
+                <h:commandLink action="#{personalController.prepareList}" value="#{bundle.EditPersonalShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditPersonalIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
