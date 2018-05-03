@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -24,13 +25,27 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:outputText>
                     <h:outputText value="#{bundle.ViewPersonalLabel_genero}"/>
-                    <h:outputText value="#{personalController.selected.genero}" title="#{bundle.ViewPersonalTitle_genero}"/>
+                    <c:choose>
+                        <c:when test="#{personalController.selected.isHombre()}">
+                            <h:outputText value="Masculino"/>
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="Femenino"/>
+                        </c:otherwise>
+                    </c:choose>
                     <h:outputText value="#{bundle.ViewPersonalLabel_estado}"/>
-                    <h:outputText value="#{personalController.selected.estado}" title="#{bundle.ViewPersonalTitle_estado}"/>
+                    <c:choose>
+                        <c:when test="#{personalController.selected.estado}">
+                            <h:outputText value="Activo"/>
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="Inactivo"/>
+                        </c:otherwise>
+                    </c:choose>
                     <h:outputText value="#{bundle.ViewPersonalLabel_codcomuna}"/>
-                    <h:outputText value="#{personalController.selected.codcomuna}" title="#{bundle.ViewPersonalTitle_codcomuna}"/>
+                    <h:outputText value="#{comunaController.buscarComuna(personalController.selected.codcomuna)}" title="#{bundle.ViewPersonalTitle_codcomuna}"/>
                     <h:outputText value="#{bundle.ViewPersonalLabel_codpro}"/>
-                    <h:outputText value="#{personalController.selected.codpro}" title="#{bundle.ViewPersonalTitle_codpro}"/>
+                    <h:outputText value="#{profesionController.buscarProfesion(personalController.selected.codpro)}" title="#{bundle.ViewPersonalTitle_codpro}"/>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{personalController.destroyAndView}" value="#{bundle.ViewPersonalDestroyLink}"/>

@@ -34,7 +34,7 @@ public class ComunaController implements Serializable {
     
      public String buscarComuna(Object obj){
         Comuna co = (Comuna) obj;
-        return co.getNombre();
+        return ""+co.getCodComuna()+"-"+co.getNombre();
     }
 
     public Comuna getSelected() {
